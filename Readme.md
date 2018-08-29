@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Дарья Клюхина](https://up.htmlacademy.ru/javascript/15/user/125399).
-* Наставник: `Неизвестно`.
+* Наставник: Дмитрий Батогов.
 
 ---
 
