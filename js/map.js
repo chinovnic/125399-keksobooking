@@ -26,6 +26,7 @@ var mapPin = document.querySelector('.map__pin');
 var mapPins = map.querySelector('.map__pins');
 var mapFilters = map.querySelector('.map__filters-container');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 var maxX = map.offsetWidth;
 
 var getRandNum = function (num) {
@@ -41,35 +42,38 @@ var getParameterIndex = function (array) {
   return array[parameterIndex];
 };
 
-var getRandomArray = function (arr) {
-  while (arr.length > 0) {
-    var index = Math.floor(Math.random() * arr.length);
-    arr.length--;
-    var temp = arr[arr.length];
-    arr[arr.length] = arr[index];
-    arr[index] = temp;
+var getRandOrderArray = function (arr) {
+  var j;
+  var temp;
+  for (var i = arr.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random() * (i + 1));
+    temp = arr[j];
+    arr[j] = arr[i];
+    arr[i] = temp;
   }
   return arr;
 };
 
-var getRandOrderArray = function (initialArr) {
-  var RandOrderArray = [];
-  for (var i = 0; i < initialArr; i++) {
-    var RandIndex = getRandNum(initialArr.length);
-    RandOrderArray.push(initialArr[RandIndex]);
+var getRandomArray = function (initialArr) {
+  var RandomArray = [];
+  var amount = getRandNum(initialArr.length);
+  for (var i = 0; i < amount; i++) {
+    RandomArray.push(initialArr[i]);
   }
-  return RandOrderArray;
+  return RandomArray;
 };
 
-var createAd = function (number) {
+var createAd = function () {
   var locationX = getRandNum(maxX);
   var locationY = getRandInRange(MIN_Y, MAX_Y);
   var ad = {
     'author': {
       'avatar': 'img/avatars/user{{0' + getRandInRange(MIN_USER, MAX_USER) + '}}.png'
+
     },
     'offer': {
       'title': getParameterIndex(OFFER_TITLE),
+
       'address': locationX + ', ' + locationY,
       'price': getRandInRange(MIN_PRICE, MAX_PRICE),
       'type': getParameterIndex(OFFER_TYPE),
@@ -90,22 +94,48 @@ var createAd = function (number) {
   return ad;
 };
 
+var ads = [];
 var getAdsList = function () {
-  var ads = [];
   for (var i = 1; i <= MAX_USER; i++) {
     ads.push(createAd(i));
   }
-  return ads;
+};
+
+getAdsList();
+
+var pinRender = function (ad) {
+  var pinElement = pinTemplate.cloneNode(true);
+  var pinElementWidth = mapPin.offsetWidth;
+  var pinElementHeight = mapPin.offsetHeight;
+  var pinImage = pinElement.querySelector('.map__img');
+
+  pinElement.style = 'left:' + (ad.location.x - pinElementWidth / 2) + 'px; right' + (ad.location.y - pinElementHeight) + 'px';
+  // pinImage.src = ad.author.avatar;
+  // pinImage.alt = ad.offer.title;
+  return pinElement;
+};
+
+var cardRender = function (ad) {
+  var cardElement = cardTemplate.cloneNode(true);
+  cardElement.querySelector('.popup__title').textContent = ad.offer.title;
+  cardElement.querySelector('.popup__text--address').textContent = ad.offer.address;
+  cardElement.querySelector('.popup__text--price').textContent = ad.offer.price + '₽/ночь';
+  cardElement.querySelector('.popup__type').textContent = ad.offer.type;
+  cardElement.querySelector('.popup__text--capacity').textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей';
+  cardElement.querySelector('.popup__text--time').textContent = 'заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
+  // cardElement.querySelector('.popup__features').textContent = ad.offer.features;
+  cardElement.querySelector('.popup__description').textContent = ad.offer.description;
+  cardElement.querySelector('.popup__photos').src = ad.offer.photos;
+  cardElement.querySelector('.popup__avatar').src = ad.author.avatar;
+  return cardElement;
 };
 
 var fragment = document.createDocumentFragment();
 
-var pinRender = function (ad) {
-  var pinElement = pinTemplate.cloneNode(true);
-
-
-  return pinElement;
-};
+for (var i = 0; i < ads.length; i++) {
+  fragment.appendChild(pinRender(ads[i]));
+  mapPins.appendChild(fragment);
+}
 
 var userDialog = document.querySelector('.map');
 userDialog.classList.remove('map--faded');
