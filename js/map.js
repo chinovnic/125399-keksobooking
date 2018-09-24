@@ -22,6 +22,7 @@ var minGuests = 1;
 var maxGuests = 10;
 var map = document.querySelector('.map--faded');
 var mapPin = document.querySelector('.map__pin');
+var mainPin = document.querySelector('.map__pin--main');
 var mapPins = map.querySelector('.map__pins');
 var mapFilters = map.querySelector('.map__filters-container');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -96,7 +97,6 @@ var getAdsList = function () {
     var ad = {
       'author': {
         'avatar': 'img/avatars/user0' + Users[i] + '.png'
-        // 'avatar': 'img/avatars/user01.png'
       },
       'offer': {
         'title': OFFER_TITLE[i],
@@ -194,12 +194,48 @@ var cardRender = function (ad) {
 };
 
 var fragment = document.createDocumentFragment();
-for (var i = 0; i < ads.length; i++) {
-  fragment.appendChild(pinRender(ads[i]));
-  mapPins.appendChild(fragment);
-}
+var showPins = function () {
+  for (var i = 0; i < ads.length; i++) {
+    fragment.appendChild(pinRender(ads[i]));
+    mapPins.appendChild(fragment);
+  }
+};
 
-map.insertBefore(cardRender(ads[0]), mapFilters);
+var formHeader = document.querySelector('.ad-form-header');
+var formFieldsets = document.querySelectorAll('.ad-form__element');
+var mapFieldsets = document.querySelectorAll('.map__filter');
+var formFeatures = document.querySelector('.map__features');
+
+formHeader.setAttribute('disabled', true);
+formFeatures.setAttribute('disabled', true);
+
+formFieldsets.forEach(function (el) {
+  el.setAttribute('disabled', true);
+});
+mapFieldsets.forEach(function (el) {
+  el.setAttribute('disabled', true);
+});
 
 var userDialog = document.querySelector('.map');
-userDialog.classList.remove('map--faded');
+var adForm = document.querySelector('.ad-form');
+
+var onPinChange = function () {
+  userDialog.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  formHeader.removeAttribute('disabled', true);
+  formFeatures.removeAttribute('disabled', true);
+  formFieldsets.forEach(function (el) {
+    el.removeAttribute('disabled', true);
+  });
+  mapFieldsets.forEach(function (el) {
+    el.removeAttribute('disabled', true);
+  });
+
+  showPins();
+};
+
+mainPin.addEventListener('mouseup', onPinChange);
+
+mapPin.addEventListener('click', function () {
+  map.insertBefore(cardRender(ads[0]), mapFilters);
+});
