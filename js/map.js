@@ -137,6 +137,13 @@ var pinRender = function (ad, i) {
   pinImage.src = ad.author.avatar;
   pinImage.alt = ad.offer.title;
   pinElement.setAttribute('data-index', i);
+
+
+  pinElement.addEventListener('click', function (evt) {
+    var elementIndex = evt.currentTarget.dataset.index;
+    map.insertBefore(cardRender(ads[elementIndex]), mapFilters);
+  });
+
   return pinElement;
 };
 
@@ -257,19 +264,7 @@ var onCardClose = function () {
   removeElement(map, cardTemplate);
 };
 
-
 var cardClose = document.querySelector('.popup__close');
 cardClose.addEventListener('click', onCardClose);
 
-var onPinsClick = function (evt) {
-  var target = evt.target;
-  while (target !== mapPins) {
-    if (target.className === 'map__pin') {
-      var elementIndex = target.dataset.index;
-      map.insertBefore(cardRender(ads[elementIndex]), mapFilters);
-    }
-    target = target.parentNode;
-  }
-};
 
-mapPin.addEventListener('click', onPinsClick);
