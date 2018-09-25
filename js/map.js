@@ -198,6 +198,25 @@ var cardRender = function (ad) {
   renderElements(getCardFeatures(ad.offer.features), cardFeatures);
   renderElements(getCardImages(ad.offer.photos), cardPhotosWrapper);
 
+  var removeElement = function (parent, element) {
+    parent.removeChild(element);
+  };
+
+  var cardClose = cardElement.querySelector('.popup__close');
+  cardClose.addEventListener('click', function (evt) {
+    var target = event.target;
+    var targetBlock = target.parentNode;
+    removeElement(map, targetBlock);
+  });
+
+  cardClose.addEventListener('keydown', function (evt) {
+    var target = event.target;
+    var targetBlock = target.parentNode;
+    if (evt.keyCode === 27) {
+      removeElement(map, targetBlock);
+    }
+  });
+
   return cardElement;
 };
 
@@ -255,16 +274,3 @@ var onPinChange = function () {
 };
 
 mainPin.addEventListener('mouseup', onPinChange);
-
-var removeElement = function (parent, element) {
-  parent.removeChild(element);
-};
-
-var onCardClose = function () {
-  removeElement(map, cardTemplate);
-};
-
-var cardClose = document.querySelector('.popup__close');
-cardClose.addEventListener('click', onCardClose);
-
-
