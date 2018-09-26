@@ -289,6 +289,8 @@ var adFormTimeIn = adForm.querySelector('#timein');
 var adFormTimeOut = adForm.querySelector('#timeout');
 var adFormType = adForm.querySelector('#type');
 var adFormPrice = adForm.querySelector('#price');
+var adFormRoomNumber = adForm.querySelector('#room_number');
+var adFormCapacity = adForm.querySelector('#capacity');
 
 var onTimeInChange = function () {
   adFormTimeOut.value = adFormTimeIn.value;
@@ -305,7 +307,34 @@ var onFormTypeChange = function () {
   adFormPrice.min = minValue;
 };
 
+var maxCapacity = {
+  '1': 1,
+  '2': 2,
+  '3': 3,
+  '100': 0
+};
+
+var checkCapacity = function () {
+  var roomsNumber = adFormRoomNumber.value;
+  var capacity = adFormCapacity.value;
+  var possibleCapacity = maxCapacity[roomsNumber];
+  if (capacity > possibleCapacity) {
+    adFormCapacity.setAttribute('disable', true);
+    adFormCapacity.setCustomValidity('Недопустимое количество мест для выбранного числа комнат');
+  } else {
+    adFormCapacity.setAttribute('disable', false);
+    adFormCapacity.setCustomValidity('');
+  }
+};
+
+checkCapacity();
+
+var onFormCapacityChange = function () {
+  checkCapacity();
+};
+
 adFormTimeIn.addEventListener('change', onTimeInChange);
 adFormTimeOut.addEventListener('change', onTimeOutChange);
 adFormType.addEventListener('change', onFormTypeChange);
-
+adFormCapacity.addEventListener('change', onFormCapacityChange);
+adFormRoomNumber.addEventListener('change', onFormCapacityChange);
