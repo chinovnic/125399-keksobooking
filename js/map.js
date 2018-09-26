@@ -18,9 +18,10 @@ var MAX_ROOMS = 5;
 var MAX_USER = 8;
 var MIN_Y = 130;
 var MAX_Y = 630;
+var ESC = 27;
 var minGuests = 1;
 var maxGuests = 10;
-var map = document.querySelector('.map--faded');
+var map = document.querySelector('.map');
 var mapPin = document.querySelector('.map__pin');
 var mapPins = map.querySelector('.map__pins');
 var mapFilters = map.querySelector('.map__filters-container');
@@ -208,17 +209,18 @@ var cardRender = function (ad) {
     var targetBlock = target.parentNode;
     removeElement(map, targetBlock);
   });
-
-  cardClose.addEventListener('keydown', function (evt) {
-    var target = event.target;
-    var targetBlock = target.parentNode;
-    if (evt.keyCode === 27) {
-      removeElement(map, targetBlock);
-    }
-  });
-
   return cardElement;
 };
+
+document.addEventListener('keydown', function (evt) {
+
+  if (evt.keyCode === ESC) {
+    var currentCard = map.querySelector('.map__card');
+    if (currentCard !== null) {
+      currentCard.remove();
+    }
+  }
+});
 
 var fragment = document.createDocumentFragment();
 var showPins = function () {
@@ -256,6 +258,7 @@ var mainPinStartX = Math.ceil(mainPin.offsetLeft + mainPinWidth / 2);
 var adress = document.querySelector('#address');
 
 adress.setAttribute('value', mainPinStartX + ' , ' + mainPinStartY);
+adress.setAttribute('readonly', true);
 
 var onPinChange = function () {
   userDialog.classList.remove('map--faded');
