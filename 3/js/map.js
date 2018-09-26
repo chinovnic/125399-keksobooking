@@ -205,7 +205,7 @@ var cardRender = function (ad) {
 
   var cardClose = cardElement.querySelector('.popup__close');
   cardClose.addEventListener('click', function (evt) {
-    var target = event.target;
+    var target = evt.target;
     var targetBlock = target.parentNode;
     removeElement(map, targetBlock);
   });
