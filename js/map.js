@@ -18,15 +18,17 @@ var MAX_ROOMS = 5;
 var MAX_USER = 8;
 var MIN_Y = 130;
 var MAX_Y = 630;
+var ESC = 27;
 var minGuests = 1;
 var maxGuests = 10;
-var map = document.querySelector('.map--faded');
+var map = document.querySelector('.map');
 var mapPin = document.querySelector('.map__pin');
 var mapPins = map.querySelector('.map__pins');
 var mapFilters = map.querySelector('.map__filters-container');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 var maxX = map.offsetWidth;
+var mainPin = document.querySelector('.map__pin--main');
 
 var cardPhotos = {
   width: 45,
@@ -96,7 +98,6 @@ var getAdsList = function () {
     var ad = {
       'author': {
         'avatar': 'img/avatars/user0' + Users[i] + '.png'
-        // 'avatar': 'img/avatars/user01.png'
       },
       'offer': {
         'title': OFFER_TITLE[i],
@@ -127,7 +128,7 @@ var getAdsList = function () {
 
 getAdsList();
 
-var pinRender = function (ad) {
+var pinRender = function (ad, i) {
   var pinElement = pinTemplate.cloneNode(true);
   var pinElementWidth = mapPin.offsetWidth;
   var pinElementHeight = mapPin.offsetHeight;
@@ -136,6 +137,14 @@ var pinRender = function (ad) {
   pinElement.style = 'left:' + (ad.location.x - pinElementWidth / 2) + 'px; top: ' + (ad.location.y - pinElementHeight) + 'px';
   pinImage.src = ad.author.avatar;
   pinImage.alt = ad.offer.title;
+  pinElement.setAttribute('data-index', i);
+
+
+  pinElement.addEventListener('click', function (evt) {
+    var elementIndex = evt.currentTarget.dataset.index;
+    map.insertBefore(cardRender(ads[elementIndex]), mapFilters);
+  });
+
   return pinElement;
 };
 
@@ -190,16 +199,81 @@ var cardRender = function (ad) {
   renderElements(getCardFeatures(ad.offer.features), cardFeatures);
   renderElements(getCardImages(ad.offer.photos), cardPhotosWrapper);
 
+  var removeElement = function (parent, element) {
+    parent.removeChild(element);
+  };
+
+  var cardClose = cardElement.querySelector('.popup__close');
+  cardClose.addEventListener('click', function (evt) {
+    var target = evt.target;
+    var targetBlock = target.parentNode;
+    removeElement(map, targetBlock);
+  });
   return cardElement;
 };
 
-var fragment = document.createDocumentFragment();
-for (var i = 0; i < ads.length; i++) {
-  fragment.appendChild(pinRender(ads[i]));
-  mapPins.appendChild(fragment);
-}
+document.addEventListener('keydown', function (evt) {
 
-map.insertBefore(cardRender(ads[0]), mapFilters);
+  if (evt.keyCode === ESC) {
+    var currentCard = map.querySelector('.map__card');
+    if (currentCard !== null) {
+      currentCard.remove();
+    }
+  }
+});
+
+var fragment = document.createDocumentFragment();
+var showPins = function () {
+  for (var i = 0; i < ads.length; i++) {
+
+    fragment.appendChild(pinRender(ads[i], i));
+  }
+  mapPins.appendChild(fragment);
+};
+
+var formHeader = document.querySelector('.ad-form-header');
+var formFieldsets = document.querySelectorAll('.ad-form__element');
+var mapFieldsets = document.querySelectorAll('.map__filter');
+var formFeatures = document.querySelector('.map__features');
+
+formHeader.setAttribute('disabled', true);
+formFeatures.setAttribute('disabled', true);
+
+formFieldsets.forEach(function (el) {
+  el.setAttribute('disabled', true);
+});
+mapFieldsets.forEach(function (el) {
+  el.setAttribute('disabled', true);
+});
 
 var userDialog = document.querySelector('.map');
-userDialog.classList.remove('map--faded');
+var adForm = document.querySelector('.ad-form');
+
+var mainPinWidth = mainPin.offsetWidth;
+var mainPinStartHeight = mainPin.offsetHeight;
+var mainPinHeight = mainPinStartHeight + 22;
+var mainPinY = Math.ceil(mainPin.offsetTop + mainPinHeight);
+var mainPinStartY = Math.ceil(mainPin.offsetTop + mainPinStartHeight / 2);
+var mainPinStartX = Math.ceil(mainPin.offsetLeft + mainPinWidth / 2);
+var adress = document.querySelector('#address');
+
+adress.setAttribute('value', mainPinStartX + ' , ' + mainPinStartY);
+adress.setAttribute('readonly', true);
+
+var onPinChange = function () {
+  userDialog.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  formHeader.removeAttribute('disabled', true);
+  formFeatures.removeAttribute('disabled', true);
+  formFieldsets.forEach(function (el) {
+    el.removeAttribute('disabled', true);
+  });
+  mapFieldsets.forEach(function (el) {
+    el.removeAttribute('disabled', true);
+  });
+
+  adress.setAttribute('value', mainPinStartX + ' , ' + mainPinY);
+  showPins();
+};
+
+mainPin.addEventListener('mouseup', onPinChange);
