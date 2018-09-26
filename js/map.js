@@ -11,6 +11,13 @@ var OFFER_TYPE = {
   'bungalo': 'Бунгало'
 };
 
+var OFFER_PRICE = {
+  'palace': 10000,
+  'flat': 1000,
+  'house': 5000,
+  'bungalo': 0
+};
+
 var MIN_PRICE = 1000;
 var MAX_PRICE = 1000000;
 var MIN_ROOMS = 1;
@@ -95,6 +102,7 @@ var getAdsList = function () {
   var createAd = function () {
     var locationX = getRandNum(maxX);
     var locationY = getRandInRange(MIN_Y, MAX_Y);
+
     var ad = {
       'author': {
         'avatar': 'img/avatars/user0' + Users[i] + '.png'
@@ -277,3 +285,27 @@ var onPinChange = function () {
 };
 
 mainPin.addEventListener('mouseup', onPinChange);
+var adFormTimeIn = adForm.querySelector('#timein');
+var adFormTimeOut = adForm.querySelector('#timeout');
+var adFormType = adForm.querySelector('#type');
+var adFormPrice = adForm.querySelector('#price');
+
+var onTimeInChange = function () {
+  adFormTimeOut.value = adFormTimeIn.value;
+};
+
+var onTimeOutChange = function () {
+  adFormTimeIn.value = adFormTimeOut.value;
+};
+
+var onFormTypeChange = function () {
+  var minValue = OFFER_PRICE[adFormType.value];
+
+  adFormPrice.placeholder = minValue;
+  adFormPrice.min = minValue;
+};
+
+adFormTimeIn.addEventListener('change', onTimeInChange);
+adFormTimeOut.addEventListener('change', onTimeOutChange);
+adFormType.addEventListener('change', onFormTypeChange);
+
