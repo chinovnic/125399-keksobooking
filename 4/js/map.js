@@ -323,7 +323,7 @@ var checkCapacity = function () {
     adFormCapacity.setCustomValidity('Недопустимое количество мест для выбранного числа комнат');
   } else if (capacity === '0' && possibleCapacity > 0) {
     adFormCapacity.setAttribute('disable', true);
-    adFormCapacity.setCustomValidity('Комнаты не для гостей');
+    adFormCapacity.setCustomValidity('Недопустимое количество мест для выбранного числа комнат');
   } else {
     adFormCapacity.setAttribute('disable', false);
     adFormCapacity.setCustomValidity('');
