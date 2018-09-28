@@ -35,10 +35,9 @@
     el.setAttribute('disabled', true);
   });
 
-  var mainPinStartY = Math.ceil(window.pin.mainPin.offsetTop + window.pin.mainPinStartHeight / 2);
-  var mainPinStartX = Math.ceil(window.pin.mainPin.offsetLeft + window.pin.mainPinWidth / 2);
+  var mainPinStartY = Math.ceil(window.map.mainPin.offsetTop + window.pin.mainPinStartHeight / 2);
+  var mainPinStartX = Math.ceil(window.map.mainPin.offsetLeft + window.pin.mainPinWidth / 2);
   window.map.adress.setAttribute('value', mainPinStartX + ' , ' + mainPinStartY);
-  window.map.adress.setAttribute('readonly', true);
   var onTimeInChange = function () {
     adFormTimeOut.value = adFormTimeIn.value;
   };

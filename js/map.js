@@ -2,7 +2,7 @@
 (function () {
   var userDialog = document.querySelector('.map');
   var mapPin = document.querySelector('.map__pin');
-  var map = document.querySelector('.map');
+  var mapElement = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
   var mainPinWidth = mainPin.offsetWidth;
   var mainPinStartHeight = mainPin.offsetHeight;
@@ -16,7 +16,7 @@
   window.map = {
     userDialog: userDialog,
     mapPin: mapPin,
-    map: map,
+    mapElement: mapElement,
     mainPinWidth: mainPinWidth,
     mainPinStartHeight: mainPinStartHeight,
     adress: adress,
@@ -24,7 +24,8 @@
     formFieldsets: formFieldsets,
     mapFieldsets: mapFieldsets,
     formFeatures: formFeatures,
-    adForm: adForm
+    adForm: adForm,
+    mainPin: mainPin
   };
 
   var onPinChange = function () {
@@ -35,14 +36,14 @@
     formFieldsets.forEach(function (el) {
       el.removeAttribute('disabled', true);
     });
-    window.form.mapFieldsets.forEach(function (el) {
+    mapFieldsets.forEach(function (el) {
       el.removeAttribute('disabled', true);
     });
     window.pin.showPins();
   };
 
   var mainPinHeight = mainPinStartHeight + 22;
-  var mapWidth = map.offsetWidth;
+  var mapWidth = mapElement.offsetWidth;
 
   var mapPinsLimits = {
     MIN_Y: 130 - mainPinHeight,

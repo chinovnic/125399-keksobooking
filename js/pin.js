@@ -1,7 +1,7 @@
 'use strict';
 (function () {
-  var mapPins = window.map.map.querySelector('.map__pins');
-  var mapFilters = window.map.map.querySelector('.map__filters-container');
+  var mapPins = window.map.mapElement.querySelector('.map__pins');
+  var mapFilters = window.map.mapElement.querySelector('.map__filters-container');
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
   var pinRender = function (ad, i) {
@@ -17,7 +17,7 @@
 
     pinElement.addEventListener('click', function (evt) {
       var elementIndex = evt.currentTarget.dataset.index;
-      window.map.map.insertBefore(window.card.cardRender(window.data.ads[elementIndex]), mapFilters);
+      window.map.mapElement.insertBefore(window.card.cardRender(window.data.ads[elementIndex]), mapFilters);
     });
 
     return pinElement;

@@ -67,7 +67,7 @@
     cardClose.addEventListener('click', function (evt) {
       var target = evt.target;
       var targetBlock = target.parentNode;
-      removeElement(window.map.map, targetBlock);
+      removeElement(window.map.mapElement, targetBlock);
     });
     return cardElement;
   };
@@ -75,7 +75,7 @@
   document.addEventListener('keydown', function (evt) {
 
     if (evt.keyCode === ESC) {
-      var currentCard = window.map.map.querySelector('.map__card');
+      var currentCard = window.map.mapElement.querySelector('.map__card');
       if (currentCard !== null) {
         currentCard.remove();
       }
