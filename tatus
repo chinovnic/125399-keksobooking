@@ -1,0 +1,87 @@
+[1mdiff --git a/js/card.js b/js/card.js[m
+[1mindex 0810462..c5a21c8 100644[m
+[1m--- a/js/card.js[m
+[1m+++ b/js/card.js[m
+[36m@@ -53,7 +53,6 @@[m
+     cardElement.querySelector('.popup__type').textContent = ad.offer.type;[m
+     cardElement.querySelector('.popup__text--capacity').textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей';[m
+     cardElement.querySelector('.popup__text--time').textContent = 'заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;[m
+[31m-[m
+     cardElement.querySelector('.popup__description').textContent = ad.offer.description;[m
+     cardElement.querySelector('.popup__avatar').src = ad.author.avatar;[m
+ [m
+[1mdiff --git a/js/form.js b/js/form.js[m
+[1mindex 79a9423..ebec467 100644[m
+[1m--- a/js/form.js[m
+[1m+++ b/js/form.js[m
+[36m@@ -90,4 +90,20 @@[m
+   adFormType.addEventListener('change', onFormTypeChange);[m
+   adFormCapacity.addEventListener('change', onFormCapacityChange);[m
+   adFormRoomNumber.addEventListener('change', onFormCapacityChange);[m
+[32m+[m
+[32m+[m[32m  var onPinChange = function () {[m
+[32m+[m[32m    window.map.userDialog.classList.remove('map--faded');[m
+[32m+[m[32m    adForm.classList.remove('ad-form--disabled');[m
+[32m+[m[32m    formHeader.removeAttribute('disabled', true);[m
+[32m+[m[32m    formFeatures.removeAttribute('disabled', true);[m
+[32m+[m[32m    formFieldsets.forEach(function (el) {[m
+[32m+[m[32m      el.removeAttribute('disabled', true);[m
+[32m+[m[32m    });[m
+[32m+[m[32m    mapFieldsets.forEach(function (el) {[m
+[32m+[m[32m      el.removeAttribute('disabled', true);[m
+[32m+[m[32m    });[m
+[32m+[m[32m    window.pin.showPins();[m
+[32m+[m[32m  };[m
+[32m+[m
+[32m+[m[32m  window.map.mainPin.addEventListener('mouseup', onPinChange);[m
+ })();[m
+[1mdiff --git a/js/map.js b/js/map.js[m
+[1mindex 8d8ad46..f4e49a5 100644[m
+[1m--- a/js/map.js[m
+[1m+++ b/js/map.js[m
+[36m@@ -6,27 +6,15 @@[m
+   var mainPin = document.querySelector('.map__pin--main');[m
+   var mainPinWidth = mainPin.offsetWidth;[m
+   var mainPinStartHeight = mainPin.offsetHeight;[m
+[32m+[m[32m  var adress = document.querySelector('#address');[m
+ [m
+   window.map = {[m
+     userDialog: userDialog,[m
+     mapPin: mapPin,[m
+     map: map,[m
+     mainPinWidth: mainPinWidth,[m
+[31m-    mainPinStartHeight: mainPinStartHeight[m
+[31m-  };[m
+[31m-[m
+[31m-  var onPinChange = function () {[m
+[31m-    userDialog.classList.remove('map--faded');[m
+[31m-    window.form.adForm.classList.remove('ad-form--disabled');[m
+[31m-    window.form.formHeader.removeAttribute('disabled', true);[m
+[31m-    window.form.formFeatures.removeAttribute('disabled', true);[m
+[31m-    window.form.formFieldsets.forEach(function (el) {[m
+[31m-      el.removeAttribute('disabled', true);[m
+[31m-    });[m
+[31m-    window.form.mapFieldsets.forEach(function (el) {[m
+[31m-      el.removeAttribute('disabled', true);[m
+[31m-    });[m
+[31m-    window.pin.showPins();[m
+[32m+[m[32m    mainPinStartHeight: mainPinStartHeight,[m
+[32m+[m[32m    adress: adress[m
+   };[m
+ [m
+   var mainPinHeight = mainPinStartHeight + 22;[m
+[36m@@ -95,14 +83,10 @@[m
+ [m
+       document.removeEventListener('mousemove', onMouseMove);[m
+       document.removeEventListener('mouseup', onMouseUp);[m
+[31m-      var mainPinY = Math.ceil(mainPin.offsetTop + mainPinHeight);[m
+[31m-      var mainPinX = Math.ceil(mainPin.offsetLeft + mainPinWidth / 2);[m
+[31m-      window.form.adress.setAttribute('value', mainPinX + ' , ' + mainPinY);[m
+     };[m
+ [m
+     document.addEventListener('mousemove', onMouseMove);[m
+     document.addEventListener('mouseup', onMouseUp);[m
+[31m-    mainPin.addEventListener('mouseup', onPinChange);[m
+   });[m
+ })();[m
+ [m
