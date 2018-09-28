@@ -36,6 +36,4 @@
   window.pin = {
     showPins: showPins
   };
-
-
 })();
