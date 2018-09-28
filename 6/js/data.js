@@ -21,7 +21,7 @@
   var MAX_Y = 630;
   var minGuests = 1;
   var maxGuests = 10;
-  var maxX = window.map.map.offsetWidth;
+  var maxX = document.querySelector('.map').offsetWidth;
 
   var getRandNum = function (num) {
     return Math.floor(Math.random() * (num + 1));
