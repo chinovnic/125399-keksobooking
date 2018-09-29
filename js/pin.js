@@ -17,23 +17,24 @@
 
     pinElement.addEventListener('click', function (evt) {
       var elementIndex = evt.currentTarget.dataset.index;
-      window.map.mapElement.insertBefore(window.card.cardRender(window.data.ads[elementIndex]), mapFilters);
+      window.map.mapElement.insertBefore(window.card.cardRender(window.arr[elementIndex]), mapFilters);
     });
 
     return pinElement;
   };
+
   var fragment = document.createDocumentFragment();
-  var showPins = function () {
-    for (var i = 0; i < window.data.ads.length; i++) {
+  window.load(function () {
+    var showPins = function () {
+      for (var i = 0; i < 8; i++) {
+        fragment.appendChild(pinRender(window.arr[i], i));
+      }
+      mapPins.appendChild(fragment);
+    };
 
-      fragment.appendChild(pinRender(window.data.ads[i], i));
-    }
-    mapPins.appendChild(fragment);
-  };
+    window.pin = {
+      showPins: showPins
+    };
+  });
 
-
-
-  window.pin = {
-    showPins: showPins
-  };
 })();
