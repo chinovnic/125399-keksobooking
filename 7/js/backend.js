@@ -16,6 +16,7 @@
   };
   window.load = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
+    window.xhr = xhr;
     xhr.responseType = 'json';
 
     xhr.open('GET', GET_URL);

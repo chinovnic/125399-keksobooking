@@ -45,7 +45,7 @@
     mapFieldsets.forEach(function (el) {
       el.removeAttribute('disabled', true);
     });
-    window.pin.showPins();
+    window.showPins();
   };
 
   var mainPinHeight = mainPinStartHeight + 22;
