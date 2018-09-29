@@ -31,10 +31,7 @@
       }
       mapPins.appendChild(fragment);
     };
-
-    window.pin = {
-      showPins: showPins
-    };
+    window.showPins = showPins;
   });
 
 })();
