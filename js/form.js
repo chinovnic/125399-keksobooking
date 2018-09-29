@@ -9,6 +9,7 @@
   var adFormCapacity = adForm.querySelector('#capacity');
   var fieldsets = document.querySelectorAll('fieldset');
   var selects = document.querySelectorAll('select');
+  var main = document.querySelector('main');
 
   window.form = {
     adForm: adForm,
@@ -93,6 +94,19 @@
       inputsList[i].disabled = true;
     }
   };
+  var showSuccess = function () {
+    var success = document.querySelector('#success').content.querySelector('.success');
+    var successElement = success.cloneNode(true);
+    successElement.addEventListener('mousedown', closeSuccess);
+    main.appendChild(successElement);
+    document.addEventListener('keydown', closeSuccess);
+  };
+
+  var closeSuccess = function () {
+    var successElement = document.querySelector('.success');
+    main.removeChild(successElement);
+    document.removeEventListener('keydown', closeSuccess);
+  };
   var onSubmit = function () {
     adForm.reset();
     window.map.mainPin.style = 'left:' + window.map.mapCenterX + 'px; top:' + window.map.mapCenterY + 'px;';
@@ -108,11 +122,9 @@
     for (var t = 0; t < mapPins.length; t++) {
       pinsContainer.removeChild(mapPins[t]);
     }
-    // showSuccess();
+    showSuccess();
 
     disableInputs(fieldsets);
     disableInputs(selects);
   };
-
-
 })();
