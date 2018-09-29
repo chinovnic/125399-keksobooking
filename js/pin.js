@@ -22,8 +22,6 @@
 
     return pinElement;
   };
-
-
   var fragment = document.createDocumentFragment();
   var showPins = function () {
     for (var i = 0; i < window.data.ads.length; i++) {
@@ -32,6 +30,8 @@
     }
     mapPins.appendChild(fragment);
   };
+
+
 
   window.pin = {
     showPins: showPins

@@ -12,6 +12,10 @@
   var mapFieldsets = document.querySelectorAll('.map__filter');
   var formFeatures = document.querySelector('.map__features');
   var adForm = document.querySelector('.ad-form');
+  var mapHeight = mapElement.offsetHeight;
+  var mapWidth = mapElement.offsetWidth;
+  var mapCenterY = mapHeight / 2 - mainPinStartHeight / 2;
+  var mapCenterX = mapWidth / 2 - mainPinWidth / 2;
 
   window.map = {
     userDialog: userDialog,
@@ -25,7 +29,9 @@
     mapFieldsets: mapFieldsets,
     formFeatures: formFeatures,
     adForm: adForm,
-    mainPin: mainPin
+    mainPin: mainPin,
+    mapCenterY: mapCenterY,
+    mapCenterX: mapCenterX
   };
 
   var onPinChange = function () {
@@ -43,7 +49,6 @@
   };
 
   var mainPinHeight = mainPinStartHeight + 22;
-  var mapWidth = mapElement.offsetWidth;
 
   var mapPinsLimits = {
     MIN_Y: 130 - mainPinHeight,
