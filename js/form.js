@@ -9,7 +9,6 @@
   var adFormCapacity = adForm.querySelector('#capacity');
   var fieldsets = document.querySelectorAll('fieldset');
   var selects = document.querySelectorAll('select');
-  var main = document.querySelector('main');
 
   window.form = {
     adForm: adForm,
@@ -83,48 +82,34 @@
   adFormCapacity.addEventListener('change', onFormCapacityChange);
   adFormRoomNumber.addEventListener('change', onFormCapacityChange);
 
-
-  adForm.addEventListener('submit', function (evt) {
-    window.upload(new FormData(adForm), onSubmit);
-    evt.preventDefault();
-  });
-
   var disableInputs = function (inputsList) {
     for (var i = 0; i < inputsList.length; i++) {
       inputsList[i].disabled = true;
     }
   };
-  var showSuccess = function () {
-    var success = document.querySelector('#success').content.querySelector('.success');
-    var successElement = success.cloneNode(true);
-    successElement.addEventListener('mousedown', closeSuccess);
-    main.appendChild(successElement);
-    document.addEventListener('keydown', closeSuccess);
-  };
 
-  var closeSuccess = function () {
-    var successElement = document.querySelector('.success');
-    main.removeChild(successElement);
-    document.removeEventListener('keydown', closeSuccess);
-  };
   var onSubmit = function () {
     adForm.reset();
     window.map.mainPin.style = 'left:' + window.map.mapCenterX + 'px; top:' + window.map.mapCenterY + 'px;';
     window.map.mapElement.classList.add('map--faded');
 
     adForm.classList.add('ad-form--disabled');
-    var card = document.querySelector('article.map__card');
-    if (card) {
-      window.map.mapElement.removeChild(card);
+    if (window.map.card) {
+      window.map.mapElement.removeChild(window.map.card);
     }
     var mapPins = document.querySelectorAll('button.map__pin:not(.map__pin--main)');
     var pinsContainer = document.querySelector('.map__pins');
     for (var t = 0; t < mapPins.length; t++) {
       pinsContainer.removeChild(mapPins[t]);
     }
-    showSuccess();
+    window.showSuccess();
 
     disableInputs(fieldsets);
     disableInputs(selects);
   };
+
+  adForm.addEventListener('submit', function (evt) {
+    window.upload(new FormData(adForm), onSubmit, window.onSubmitError);
+    evt.preventDefault();
+  });
 })();

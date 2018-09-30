@@ -16,6 +16,9 @@
   var mapWidth = mapElement.offsetWidth;
   var mapCenterY = mapHeight / 2 - mainPinStartHeight / 2;
   var mapCenterX = mapWidth / 2 - mainPinWidth / 2;
+  var main = document.querySelector('main');
+  var card = mapElement.querySelector('.map__card');
+
 
   window.map = {
     userDialog: userDialog,
@@ -31,7 +34,9 @@
     adForm: adForm,
     mainPin: mainPin,
     mapCenterY: mapCenterY,
-    mapCenterX: mapCenterX
+    mapCenterX: mapCenterX,
+    main: main,
+    card: card
   };
 
   var onPinChange = function () {
@@ -45,8 +50,7 @@
     mapFieldsets.forEach(function (el) {
       el.removeAttribute('disabled', true);
     });
-    window.showPins();
-    console.log(dataArray);
+    window.load(window.showPins, window.onSubmitError);
   };
 
   var mainPinHeight = mainPinStartHeight + 22;
@@ -123,6 +127,38 @@
     document.addEventListener('mouseup', onMouseUp);
     mainPin.addEventListener('mouseup', onPinChange);
   });
+  var showSuccess = function () {
+    var success = document.querySelector('#success').content.querySelector('.success');
+    var successElement = success.cloneNode(true);
+    successElement.addEventListener('mousedown', closeSuccess);
+    main.appendChild(successElement);
+    document.addEventListener('keydown', closeSuccess);
+  };
+
+  var closeSuccess = function () {
+    var successElement = document.querySelector('.success');
+    main.removeChild(successElement);
+    document.removeEventListener('keydown', closeSuccess);
+  };
+  var onSubmitError = function (errorMessage) {
+    var error = document.querySelector('#error').content.querySelector('.error');
+    var errorElement = error.cloneNode(true);
+    var errorText = error.querySelector('.error__message');
+    errorText.textContent = errorMessage;
+    main.appendChild(errorElement);
+    document.addEventListener('keydown', closeError);
+    errorElement.addEventListener('click', closeError);
+  };
+  var closeError = function () {
+    var errorElement = document.querySelector('.error');
+    main.removeChild(errorElement);
+    document.removeEventListener('keydown', closeError);
+    errorElement.removeEventListener('click', closeError);
+  };
+
+  window.showSuccess = showSuccess;
+  window.onSubmitError = onSubmitError;
+  window.closeError = closeError;
 })();
 
 

@@ -15,7 +15,8 @@
     pinImage.alt = ad.offer.title;
     pinElement.setAttribute('data-index', i);
 
-    pinElement.addEventListener('click', function (evt) {
+    pinElement.addEventListener('mousedown', function (evt) {
+      // window.map.card.remove();
       var elementIndex = evt.currentTarget.dataset.index;
       window.map.mapElement.insertBefore(window.card.cardRender(window.dataArray[elementIndex]), mapFilters);
     });
@@ -24,14 +25,11 @@
   };
 
   var fragment = document.createDocumentFragment();
-  window.load(function () {
-    var showPins = function () {
-      for (var i = 0; i < window.dataArray.length; i++) {
-        fragment.appendChild(pinRender(window.dataArray[i], i));
-      }
-      mapPins.appendChild(fragment);
-    };
-    window.showPins = showPins;
-  });
-
+  var showPins = function () {
+    for (var i = 0; i < window.dataArray.length; i++) {
+      fragment.appendChild(pinRender(window.dataArray[i], i));
+    }
+    mapPins.appendChild(fragment);
+  };
+  window.showPins = showPins;
 })();
