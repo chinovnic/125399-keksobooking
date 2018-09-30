@@ -17,7 +17,7 @@
   var mapCenterY = mapHeight / 2 - mainPinStartHeight / 2;
   var mapCenterX = mapWidth / 2 - mainPinWidth / 2;
   var main = document.querySelector('main');
-  var card = mapElement.querySelector('.map__card');
+
 
 
   window.map = {
@@ -35,22 +35,15 @@
     mainPin: mainPin,
     mapCenterY: mapCenterY,
     mapCenterX: mapCenterX,
-    main: main,
-    card: card
+    main: main
   };
 
   var onPinChange = function () {
     userDialog.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
-    formHeader.removeAttribute('disabled', true);
-    formFeatures.removeAttribute('disabled', true);
-    formFieldsets.forEach(function (el) {
-      el.removeAttribute('disabled', true);
-    });
-    mapFieldsets.forEach(function (el) {
-      el.removeAttribute('disabled', true);
-    });
-    window.load(window.showPins, window.onSubmitError);
+    window.activateInputs(window.fieldsets);
+    window.activateInputs(window.selects);
+    window.load(window.showPins, onSubmitError);
   };
 
   var mainPinHeight = mainPinStartHeight + 22;

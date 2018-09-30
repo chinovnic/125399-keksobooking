@@ -2,6 +2,7 @@
 (function () {
   var ESC = 27;
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+  var card = window.map.mapElement.querySelector('.map__card');
 
   var cardPhotos = {
     width: 45,
@@ -53,6 +54,9 @@
     });
   };
   var cardRender = function (ad) {
+    if (card) {
+      card.remove();
+    }
     var cardElement = cardTemplate.cloneNode(true);
     var cardFeatures = cardElement.querySelector('.popup__features');
     var cardPhotosWrapper = cardElement.querySelector('.popup__photos');
@@ -73,11 +77,9 @@
   };
 
   document.addEventListener('keydown', function (evt) {
-
     if (evt.keyCode === ESC) {
-      var currentCard = window.map.mapElement.querySelector('.map__card');
-      if (currentCard !== null) {
-        currentCard.remove();
+      if (card) {
+        card.remove();
       }
     }
   });
@@ -87,5 +89,4 @@
     closeCard: closeCard,
     removeElement: removeElement
   };
-  // window.removeElement = removeElement;
 })();

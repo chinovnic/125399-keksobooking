@@ -32,13 +32,15 @@
         window.dataArray = dataArray;
         onLoad(xhr.response);
       } else {
-        xhr.addEventListener('error', function () {
-          onError('Произошла ошибка соединения');
-        });
-        xhr.addEventListener('timeout', function () {
-          onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
-        });
+        onError('Произошла ошибка соединения');
       }
+    });
+
+    xhr.addEventListener('error', function () {
+      onError('Произошла ошибка соединения');
+    });
+    xhr.addEventListener('timeout', function () {
+      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
     xhr.send();
   };
