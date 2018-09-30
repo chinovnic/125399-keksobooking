@@ -46,6 +46,7 @@
       el.removeAttribute('disabled', true);
     });
     window.showPins();
+    console.log(dataArray);
   };
 
   var mainPinHeight = mainPinStartHeight + 22;

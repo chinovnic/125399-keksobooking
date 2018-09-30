@@ -22,9 +22,9 @@
     xhr.open('GET', GET_URL);
 
     xhr.addEventListener('load', function () {
+      var dataArray = xhr.response;
+      window.dataArray = dataArray;
       onLoad(xhr.response);
-      var arr = JSON.parse(xhr.responseText);
-      window.arr = arr;
     });
 
     xhr.send();

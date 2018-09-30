@@ -17,7 +17,7 @@
 
     pinElement.addEventListener('click', function (evt) {
       var elementIndex = evt.currentTarget.dataset.index;
-      window.map.mapElement.insertBefore(window.card.cardRender(window.arr[elementIndex]), mapFilters);
+      window.map.mapElement.insertBefore(window.card.cardRender(window.dataArray[elementIndex]), mapFilters);
     });
 
     return pinElement;
@@ -26,8 +26,8 @@
   var fragment = document.createDocumentFragment();
   window.load(function () {
     var showPins = function () {
-      for (var i = 0; i < 8; i++) {
-        fragment.appendChild(pinRender(window.arr[i], i));
+      for (var i = 0; i < window.dataArray.length; i++) {
+        fragment.appendChild(pinRender(window.dataArray[i], i));
       }
       mapPins.appendChild(fragment);
     };
