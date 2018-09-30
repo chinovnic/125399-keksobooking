@@ -54,8 +54,9 @@
     });
   };
   var cardRender = function (ad) {
-    if (card) {
-      card.remove();
+    var currentCard = window.map.mapElement.querySelector('.map__card');
+    if (currentCard !== null) {
+      currentCard.remove();
     }
     var cardElement = cardTemplate.cloneNode(true);
     var cardFeatures = cardElement.querySelector('.popup__features');
@@ -77,9 +78,10 @@
   };
 
   document.addEventListener('keydown', function (evt) {
+    var currentCard = window.map.mapElement.querySelector('.map__card');
     if (evt.keyCode === ESC) {
-      if (card) {
-        card.remove();
+      if (currentCard !== null) {
+        currentCard.remove();
       }
     }
   });
