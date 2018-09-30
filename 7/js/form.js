@@ -9,6 +9,7 @@
   var adFormCapacity = adForm.querySelector('#capacity');
   var fieldsets = document.querySelectorAll('fieldset');
   var selects = document.querySelectorAll('select');
+  var resetButton = document.querySelector('.ad-form__reset');
 
   window.form = {
     adForm: adForm,
@@ -88,6 +89,12 @@
     }
   };
 
+  var activateInputs = function (inputsList) {
+    for (var i = 0; i < inputsList.length; i++) {
+      inputsList[i].disabled = false;
+    }
+  };
+
   var onSubmit = function () {
     adForm.reset();
     window.map.mainPin.style = 'left:' + window.map.mapCenterX + 'px; top:' + window.map.mapCenterY + 'px;';
@@ -102,14 +109,17 @@
     for (var t = 0; t < mapPins.length; t++) {
       pinsContainer.removeChild(mapPins[t]);
     }
-    window.showSuccess();
-
     disableInputs(fieldsets);
     disableInputs(selects);
   };
 
+  resetButton.addEventListener('click', onSubmit);
   adForm.addEventListener('submit', function (evt) {
     window.upload(new FormData(adForm), onSubmit, window.onSubmitError);
+    window.showSuccess();
     evt.preventDefault();
   });
+  window.activateInputs = activateInputs;
+  window.selects = selects;
+  window.fieldsets = fieldsets;
 })();

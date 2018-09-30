@@ -15,8 +15,7 @@
     pinImage.alt = ad.offer.title;
     pinElement.setAttribute('data-index', i);
 
-    pinElement.addEventListener('mousedown', function (evt) {
-      // window.map.card.remove();
+    pinElement.addEventListener('click', function (evt) {
       var elementIndex = evt.currentTarget.dataset.index;
       window.map.mapElement.insertBefore(window.card.cardRender(window.dataArray[elementIndex]), mapFilters);
     });
