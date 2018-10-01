@@ -95,7 +95,7 @@
     }
   };
 
-  var onSubmit = function () {
+  var formReset = function () {
     adForm.reset();
     window.map.mainPin.style = 'left:' + window.map.mapCenterX + 'px; top:' + window.map.mapCenterY + 'px;';
     window.map.mapElement.classList.add('map--faded');
@@ -113,10 +113,18 @@
     disableInputs(selects);
   };
 
-  resetButton.addEventListener('click', onSubmit);
+  var onReset = function () {
+    formReset();
+  };
+
+  var onSubmit = function () {
+    formReset();
+    window.showSuccess();
+  };
+
+  resetButton.addEventListener('click', onReset);
   adForm.addEventListener('submit', function (evt) {
     window.upload(new FormData(adForm), onSubmit, window.onSubmitError);
-    window.showSuccess();
     evt.preventDefault();
   });
   window.activateInputs = activateInputs;
