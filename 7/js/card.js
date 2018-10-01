@@ -2,7 +2,6 @@
 (function () {
   var ESC = 27;
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-  var card = window.map.mapElement.querySelector('.map__card');
 
   var cardPhotos = {
     width: 45,
