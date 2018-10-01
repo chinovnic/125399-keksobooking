@@ -42,8 +42,21 @@
       parent.appendChild(el);
     });
   };
-
+  var removeElement = function (parent, element) {
+    parent.removeChild(element);
+  };
+  var closeCard = function (button) {
+    button.addEventListener('click', function (evt) {
+      var target = evt.target;
+      var targetBlock = target.parentNode;
+      removeElement(window.map.mapElement, targetBlock);
+    });
+  };
   var cardRender = function (ad) {
+    var currentCard = window.map.mapElement.querySelector('.map__card');
+    if (currentCard !== null) {
+      currentCard.remove();
+    }
     var cardElement = cardTemplate.cloneNode(true);
     var cardFeatures = cardElement.querySelector('.popup__features');
     var cardPhotosWrapper = cardElement.querySelector('.popup__photos');
@@ -55,27 +68,17 @@
     cardElement.querySelector('.popup__text--time').textContent = 'заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
     cardElement.querySelector('.popup__description').textContent = ad.offer.description;
     cardElement.querySelector('.popup__avatar').src = ad.author.avatar;
+    var cardCloseButton = cardElement.querySelector('.popup__close');
 
     renderElements(getCardFeatures(ad.offer.features), cardFeatures);
     renderElements(getCardImages(ad.offer.photos), cardPhotosWrapper);
-
-    var removeElement = function (parent, element) {
-      parent.removeChild(element);
-    };
-
-    var cardClose = cardElement.querySelector('.popup__close');
-    cardClose.addEventListener('click', function (evt) {
-      var target = evt.target;
-      var targetBlock = target.parentNode;
-      removeElement(window.map.mapElement, targetBlock);
-    });
+    closeCard(cardCloseButton);
     return cardElement;
   };
 
   document.addEventListener('keydown', function (evt) {
-
+    var currentCard = window.map.mapElement.querySelector('.map__card');
     if (evt.keyCode === ESC) {
-      var currentCard = window.map.mapElement.querySelector('.map__card');
       if (currentCard !== null) {
         currentCard.remove();
       }
@@ -83,6 +86,8 @@
   });
 
   window.card = {
-    cardRender: cardRender
+    cardRender: cardRender,
+    closeCard: closeCard,
+    removeElement: removeElement
   };
 })();

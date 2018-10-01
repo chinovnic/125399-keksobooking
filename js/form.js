@@ -7,6 +7,9 @@
   var adFormPrice = adForm.querySelector('#price');
   var adFormRoomNumber = adForm.querySelector('#room_number');
   var adFormCapacity = adForm.querySelector('#capacity');
+  var fieldsets = document.querySelectorAll('fieldset');
+  var selects = document.querySelectorAll('select');
+  var resetButton = document.querySelector('.ad-form__reset');
 
   window.form = {
     adForm: adForm,
@@ -35,8 +38,8 @@
     el.setAttribute('disabled', true);
   });
 
-  var mainPinStartY = Math.ceil(window.map.mainPin.offsetTop + window.pin.mainPinStartHeight / 2);
-  var mainPinStartX = Math.ceil(window.map.mainPin.offsetLeft + window.pin.mainPinWidth / 2);
+  var mainPinStartY = Math.ceil(window.map.mainPin.offsetTop + window.map.mainPinStartHeight / 2);
+  var mainPinStartX = Math.ceil(window.map.mainPin.offsetLeft + window.map.mainPinWidth / 2);
   window.map.adress.setAttribute('value', mainPinStartX + ' , ' + mainPinStartY);
   var onTimeInChange = function () {
     adFormTimeOut.value = adFormTimeIn.value;
@@ -79,4 +82,52 @@
   adFormType.addEventListener('change', onFormTypeChange);
   adFormCapacity.addEventListener('change', onFormCapacityChange);
   adFormRoomNumber.addEventListener('change', onFormCapacityChange);
+
+  var disableInputs = function (inputsList) {
+    for (var i = 0; i < inputsList.length; i++) {
+      inputsList[i].disabled = true;
+    }
+  };
+
+  var activateInputs = function (inputsList) {
+    for (var i = 0; i < inputsList.length; i++) {
+      inputsList[i].disabled = false;
+    }
+  };
+
+  var formReset = function () {
+    adForm.reset();
+    window.map.mainPin.style = 'left:' + window.map.mapCenterX + 'px; top:' + window.map.mapCenterY + 'px;';
+    window.map.mapElement.classList.add('map--faded');
+
+    adForm.classList.add('ad-form--disabled');
+    if (window.map.card) {
+      window.map.mapElement.removeChild(window.map.card);
+    }
+    var mapPins = document.querySelectorAll('button.map__pin:not(.map__pin--main)');
+    var pinsContainer = document.querySelector('.map__pins');
+    for (var t = 0; t < mapPins.length; t++) {
+      pinsContainer.removeChild(mapPins[t]);
+    }
+    disableInputs(fieldsets);
+    disableInputs(selects);
+  };
+
+  var onReset = function () {
+    formReset();
+  };
+
+  var onSubmit = function () {
+    formReset();
+    window.showSuccess();
+  };
+
+  resetButton.addEventListener('click', onReset);
+  adForm.addEventListener('submit', function (evt) {
+    window.upload(new FormData(adForm), onSubmit, window.onSubmitError);
+    evt.preventDefault();
+  });
+  window.activateInputs = activateInputs;
+  window.selects = selects;
+  window.fieldsets = fieldsets;
 })();

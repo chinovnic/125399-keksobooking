@@ -12,6 +12,11 @@
   var mapFieldsets = document.querySelectorAll('.map__filter');
   var formFeatures = document.querySelector('.map__features');
   var adForm = document.querySelector('.ad-form');
+  var mapHeight = mapElement.offsetHeight;
+  var mapWidth = mapElement.offsetWidth;
+  var mapCenterY = mapHeight / 2 - mainPinStartHeight / 2;
+  var mapCenterX = mapWidth / 2 - mainPinWidth / 2;
+  var main = document.querySelector('main');
 
   window.map = {
     userDialog: userDialog,
@@ -25,25 +30,21 @@
     mapFieldsets: mapFieldsets,
     formFeatures: formFeatures,
     adForm: adForm,
-    mainPin: mainPin
+    mainPin: mainPin,
+    mapCenterY: mapCenterY,
+    mapCenterX: mapCenterX,
+    main: main
   };
 
   var onPinChange = function () {
     userDialog.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
-    formHeader.removeAttribute('disabled', true);
-    formFeatures.removeAttribute('disabled', true);
-    formFieldsets.forEach(function (el) {
-      el.removeAttribute('disabled', true);
-    });
-    mapFieldsets.forEach(function (el) {
-      el.removeAttribute('disabled', true);
-    });
-    window.pin.showPins();
+    window.activateInputs(window.fieldsets);
+    window.activateInputs(window.selects);
+    window.load(window.showPins, onSubmitError);
   };
 
   var mainPinHeight = mainPinStartHeight + 22;
-  var mapWidth = mapElement.offsetWidth;
 
   var mapPinsLimits = {
     MIN_Y: 130 - mainPinHeight,
@@ -117,6 +118,38 @@
     document.addEventListener('mouseup', onMouseUp);
     mainPin.addEventListener('mouseup', onPinChange);
   });
+  var showSuccess = function () {
+    var success = document.querySelector('#success').content.querySelector('.success');
+    var successElement = success.cloneNode(true);
+    successElement.addEventListener('mousedown', closeSuccess);
+    main.appendChild(successElement);
+    document.addEventListener('keydown', closeSuccess);
+  };
+
+  var closeSuccess = function () {
+    var successElement = document.querySelector('.success');
+    main.removeChild(successElement);
+    document.removeEventListener('keydown', closeSuccess);
+  };
+  var onSubmitError = function (errorMessage) {
+    var error = document.querySelector('#error').content.querySelector('.error');
+    var errorElement = error.cloneNode(true);
+    var errorText = error.querySelector('.error__message');
+    errorText.textContent = errorMessage;
+    main.appendChild(errorElement);
+    document.addEventListener('keydown', closeError);
+    errorElement.addEventListener('click', closeError);
+  };
+  var closeError = function () {
+    var errorElement = document.querySelector('.error');
+    main.removeChild(errorElement);
+    document.removeEventListener('keydown', closeError);
+    errorElement.removeEventListener('click', closeError);
+  };
+
+  window.showSuccess = showSuccess;
+  window.onSubmitError = onSubmitError;
+  window.closeError = closeError;
 })();
 
 
