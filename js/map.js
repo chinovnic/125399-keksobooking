@@ -18,8 +18,6 @@
   var mapCenterX = mapWidth / 2 - mainPinWidth / 2;
   var main = document.querySelector('main');
 
-
-
   window.map = {
     userDialog: userDialog,
     mapPin: mapPin,
