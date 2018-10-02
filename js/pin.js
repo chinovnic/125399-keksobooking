@@ -25,7 +25,7 @@
 
   var fragment = document.createDocumentFragment();
   var showPins = function () {
-    for (var i = 0; i < window.dataArray.length; i++) {
+    for (var i = 0; i < 5; i++) {
       fragment.appendChild(pinRender(window.dataArray[i], i));
     }
     mapPins.appendChild(fragment);
