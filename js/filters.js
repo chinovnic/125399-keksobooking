@@ -1,5 +1,7 @@
 'use strict';
 (function () {
+  var DEBOUNCE_INTERVAL = 300;
+  var lastTimeout;
   var housingPriceDictionary = {
     'low': {
       minPrice: 0,
@@ -20,7 +22,6 @@
   var filterHousingRoomsElement = document.querySelector('#housing-rooms');
   var filterHousingGuestsElement = document.querySelector('#housing-guests');
 
-
   var getFilterParameterType = function (ads, filterFormElement) {
     if (filterFormElement.value === 'any') {
       return true;
@@ -37,7 +38,7 @@
     if (filterFormElement.value === 'any') {
       return true;
     }
-    return ads.offer.guests === filterFormElement.value;
+    return ads.offer.guests === Number(filterFormElement.value);
   };
 
   var getFilterParameterPrice = function (ads, filterFormElement) {
@@ -49,18 +50,21 @@
     return ads.offer.price >= minPrice && ads.offer.price <= maxPrice;
   };
 
-
   var onFiltersChange = function () {
-    console.log(window.dataArray);
     var filtersAds = window.dataArray.filter(function (filtredData) {
-      var is_type = getFilterParameterType(filtredData, filterHousingTypeElement);
-      var is_rooms = getFilterParameterRooms(filtredData, filterHousingRoomsElement);
-      var is_price = getFilterParameterPrice(filtredData, filterHousingPriceElement);
-      var is_guests = getFilterParameterGuests(filtredData, filterHousingGuestsElement);
-      return is_type && is_rooms && is_price && is_guests;
+      var adType = getFilterParameterType(filtredData, filterHousingTypeElement);
+      var adRooms = getFilterParameterRooms(filtredData, filterHousingRoomsElement);
+      var adPrice = getFilterParameterPrice(filtredData, filterHousingPriceElement);
+      var adGuests = getFilterParameterGuests(filtredData, filterHousingGuestsElement);
+      return adType && adRooms && adPrice && adGuests;
     });
     window.dataArrayCopy = filtersAds;
-    window.showPins();
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+    lastTimeout = window.setTimeout(function () {
+      window.showPins();
+    }, DEBOUNCE_INTERVAL);
   };
 
   mapFiltersElement.addEventListener('change', onFiltersChange);

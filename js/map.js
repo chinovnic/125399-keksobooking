@@ -42,7 +42,6 @@
     window.activateInputs(window.fieldsets);
     window.activateInputs(window.selects);
     window.load(window.showPins, onSubmitError);
-    
   };
 
   var mainPinHeight = mainPinStartHeight + 22;
