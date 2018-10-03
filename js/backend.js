@@ -35,6 +35,9 @@
       if (xhr.status === SUCCESS_STATUS) {
         var dataArray = xhr.response;
         window.dataArray = dataArray;
+        window.dataArrayCopy = dataArray;
+        console.log(window.dataArrayCopy);
+        console.log(window.dataArray);
         onLoad(xhr.response);
       } else {
         onError('Произошла ошибка соединения');
