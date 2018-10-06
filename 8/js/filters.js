@@ -1,7 +1,13 @@
 'use strict';
 (function () {
-  var DEBOUNCE_INTERVAL = 300;
+  var DEBOUNCE_INTERVAL = 500;
   var lastTimeout;
+  window.debounce = function (fun) {
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+    lastTimeout = window.setTimeout(fun, DEBOUNCE_INTERVAL);
+  };
   var housingPriceDictionary = {
     'low': {
       minPrice: 0,
@@ -21,6 +27,7 @@
   var filterHousingPriceElement = document.querySelector('#housing-price');
   var filterHousingRoomsElement = document.querySelector('#housing-rooms');
   var filterHousingGuestsElement = document.querySelector('#housing-guests');
+  var filterFeaturesElemetns = document.querySelectorAll('.map__feature');
 
   var getFilterParameterType = function (ads, filterFormElement) {
     if (filterFormElement.value === 'any') {
@@ -50,21 +57,34 @@
     return ads.offer.price >= minPrice && ads.offer.price <= maxPrice;
   };
 
+  var getFilterParameterFeatures = function (ads, filterFormElement) {
+    var currentFeatures = [];
+    for (var i = 0; i < filterFormElement.length; i++) {
+      var currentElementValue = filterFormElement[i].value;
+      currentFeatures.push(currentElementValue);
+    }
+    var currentFeaturesSort = currentFeatures.sort();
+    currentFeaturesSort.join();
+    var adFeaturesArray = ads.offer.features.sort();
+    adFeaturesArray.join();
+    if (currentFeaturesSort === adFeaturesArray) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   var onFiltersChange = function () {
     var filtersAds = window.dataArray.filter(function (filtredData) {
       var adType = getFilterParameterType(filtredData, filterHousingTypeElement);
       var adRooms = getFilterParameterRooms(filtredData, filterHousingRoomsElement);
       var adPrice = getFilterParameterPrice(filtredData, filterHousingPriceElement);
       var adGuests = getFilterParameterGuests(filtredData, filterHousingGuestsElement);
+      var adFeatures = getFilterParameterFeatures(filtredData, filterFeaturesElemetns);
       return adType && adRooms && adPrice && adGuests;
     });
     window.dataArrayCopy = filtersAds;
-    if (lastTimeout) {
-      window.clearTimeout(lastTimeout);
-    }
-    lastTimeout = window.setTimeout(function () {
-      window.showPins();
-    }, DEBOUNCE_INTERVAL);
+    window.debounce(window.showPins);
   };
 
   mapFiltersElement.addEventListener('change', onFiltersChange);
