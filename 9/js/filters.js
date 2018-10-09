@@ -23,31 +23,18 @@
   var selectedFeatures = [];
 
   var getFilterParameterType = function (ads, filterFormElement) {
-    if (filterFormElement.value === 'any') {
-      return true;
-    }
-    return ads.offer.type === filterFormElement.value;
+    return filterFormElement.value === 'any' || ads.offer.type === filterFormElement.value;
   };
   var getFilterParameterRooms = function (ads, filterFormElement) {
-    if (filterFormElement.value === 'any') {
-      return true;
-    }
-    return ads.offer.rooms === Number(filterFormElement.value);
+    return filterFormElement.value === 'any' || ads.offer.rooms === Number(filterFormElement.value);
   };
   var getFilterParameterGuests = function (ads, filterFormElement) {
-    if (filterFormElement.value === 'any') {
-      return true;
-    }
-    return ads.offer.guests === Number(filterFormElement.value);
+    return filterFormElement.value === 'any' || ads.offer.guests === Number(filterFormElement.value);
   };
-
   var getFilterParameterPrice = function (ads, filterFormElement) {
-    if (filterFormElement.value === 'any') {
-      return true;
-    }
     var minPrice = housingPriceDictionary[filterFormElement.value].minPrice;
     var maxPrice = housingPriceDictionary[filterFormElement.value].maxPrice;
-    return ads.offer.price >= minPrice && ads.offer.price <= maxPrice;
+    return filterFormElement.value === 'any' || (ads.offer.price >= minPrice && ads.offer.price <= maxPrice);
   };
 
   var updateFeatures = function () {
