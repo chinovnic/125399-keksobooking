@@ -26,7 +26,7 @@
 
   function clearPhotos() {
     var photos = document.querySelectorAll('.ad-form__photo');
-    photos.forEach(function(item) {
+    photos.forEach(function (item) {
       item.remove();
     });
   }
@@ -41,7 +41,7 @@
       photoPreviewClone.appendChild(newImage);
       parentBlock.appendChild(photoPreviewClone);
     });
-  }
+  };
 
   var loadSomePhotos = function (fileChooser, preview, parentBlock) {
     var filesArray = fileChooser.files;
