@@ -16,7 +16,13 @@
     pinElement.setAttribute('data-index', i);
 
     pinElement.addEventListener('click', function (evt) {
-      var elementIndex = evt.currentTarget.dataset.index;
+      var allPins = window.map.mapElement.querySelectorAll('.map__pin');
+      allPins.forEach(function (current) {
+        current.classList.remove('map__pin--active');
+      });
+      var currentElement = evt.currentTarget;
+      currentElement.classList.add('map__pin--active');
+      var elementIndex = currentElement.dataset.index;
       window.map.mapElement.insertBefore(window.card.cardRender(window.dataArrayCopy[elementIndex]), mapFilters);
     });
 
