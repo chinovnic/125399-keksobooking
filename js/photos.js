@@ -24,32 +24,42 @@
     }
   };
 
+  function clearPhotos() {
+    var photos = document.querySelectorAll('.ad-form__photo');
+    photos.forEach(function (item) {
+      item.remove();
+    });
+  }
+
+  var addPhoto = function (file, preview, parentBlock) {
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.addEventListener('load', function () {
+      var photoPreviewClone = preview.cloneNode(true);
+      var newImage = photoPreviewClone.querySelector('img');
+      newImage.src = reader.result;
+      photoPreviewClone.appendChild(newImage);
+      parentBlock.appendChild(photoPreviewClone);
+    });
+  };
+
   var loadSomePhotos = function (fileChooser, preview, parentBlock) {
     var filesArray = fileChooser.files;
-    var reader = new FileReader();
-    var photoPreviewClone = preview.cloneNode(true);
+    clearPhotos();
     for (var i = 0; i < filesArray.length; i++) {
-      var fileName = filesArray[i].name.toLowerCase();
-      var matches = FILE_TYPES.some(function (it) {
-        return fileName.endsWith(it);
-      });
-      if (matches) {
-        reader.addEventListener('load', function (evt) {
-          //судя по всему, я не обращаюсь к тому блоку, который вставляю
-          photoPreviewClone.backgroundImage = 'url(' + evt.target.result + ')';
-          parentBlock.appendChild(photoPreviewClone);
-        });
-        if (i > 0) {
-        //   var photoPreviewAll = document.querySelectorAll('.ad-form__photo');
-        //   photoPreviewAll[0].classList.add('visually-hidden');
-        }
-        reader.readAsDataURL(filesArray[i]);
-        //Ошибку выдает, когда пытаюсь загрузить сразу несколько файлов. В этом месте он видит их сразу все, а не только отекущий
-        console.log(filesArray[i]);
-      }
+      var file = filesArray.item(i);
+      addPhoto(file, preview, parentBlock);
     }
-    photoPreviewBlock.classList.add('visually-hidden');
   };
+
+  var createImage = function () {
+    var newImage = document.createElement('img');
+    photoPreviewBlock.appendChild(newImage);
+    newImage.setAttribute('src', 'img/muffin-grey.svg');
+    newImage.setAttribute('width', '70');
+    newImage.setAttribute('height', '70');
+  };
+  createImage();
 
   var onAvatarChange = function () {
     loadPhoto(avatarInput, avatarPreview);
