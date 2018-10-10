@@ -31,45 +31,25 @@
     });
   }
 
+  var addPhoto = function (file, preview, parentBlock) {
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.addEventListener('load', function () {
+      var photoPreviewClone = preview.cloneNode(true);
+      var newImage = photoPreviewClone.querySelector('img');
+      newImage.src = reader.result;
+      photoPreviewClone.appendChild(newImage);
+      parentBlock.appendChild(photoPreviewClone);
+    });
+  }
+
   var loadSomePhotos = function (fileChooser, preview, parentBlock) {
     var filesArray = fileChooser.files;
     clearPhotos();
-    for(item in filesArray) {
-      console.log(item);
-      var reader = new FileReader();
-      reader.addEventListener('load', function () {
-        var photoPreviewClone = preview.cloneNode(true);
-        var img = photoPreviewClone.querySelector('img')
-        var newImage = document.createElement('img');
-        photoPreviewClone.appendChild(newImage);
-        parentBlock.appendChild(photoPreviewClone);
-      });
-      reader.readAsDataURL(file);
-
+    for (var i = 0; i < filesArray.length; i++) {
+      var file = filesArray.item(i);
+      addPhoto(file, preview, parentBlock);
     }
-    console.log(filesArray, 'filesArray');
-
-    // for (var i = 0; i < filesArray.length; i++) {
-    //   var fileName = filesArray[i].name.toLowerCase();
-    //   var matches = FILE_TYPES.some(function (it) {
-    //     return fileName.endsWith(it);
-    //   });
-    //   if (matches) {
-    //     reader.addEventListener('load', function (evt) {
-    //       var photoPreviewClone = preview.cloneNode(true);
-
-    //       parentBlock.appendChild(photoPreviewClone);
-    //     });
-    //     if (i > 0) {
-    //     //   var photoPreviewAll = document.querySelectorAll('.ad-form__photo');
-    //     //   photoPreviewAll[0].classList.add('visually-hidden');
-    //     }
-    //     reader.readAsDataURL(filesArray[i]);
-
-    //     console.log(filesArray[i]);
-    //   }
-    // }
-    // photoPreviewBlock.classList.add('visually-hidden');
   };
 
   var createImage = function () {
