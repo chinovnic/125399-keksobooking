@@ -1,6 +1,10 @@
 'use strict';
 (function () {
   var housingPriceDictionary = {
+    'any': {
+      minPrice: 0,
+      maxPrice: Infinity
+    },
     'low': {
       minPrice: 0,
       maxPrice: 10000
